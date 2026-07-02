@@ -1,0 +1,36 @@
+{
+    "title": "USA Roofing Contractor Directory Scraper Input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "keyword": {
+            "title": "Keyword",
+            "type": "string",
+            "description": "The specific roofing niche (e.g., 'roofing contractor', 'roof repair').",
+            "editor": "textfield",
+            "prefill": "roofing contractor"
+        },
+        "location": {
+            "title": "Location (City, State or Zip Code)",
+            "type": "string",
+            "description": "The US location (e.g., 'Miami, FL', 'Dallas, TX').",
+            "editor": "textfield",
+            "prefill": "Miami, FL"
+        },
+        "maxLeads": {
+            "title": "Maximum Leads",
+            "type": "integer",
+            "description": "Maximum number of US roofing contractor leads to extract.",
+            "default": 100,
+            "minimum": 1
+        },
+        "proxyConfiguration": {
+            "title": "Proxy Configuration",
+            "type": "object",
+            "description": "Proxy settings. Apify Residential Proxy (US targeted) is required.",
+            "prefill": { "useApifyProxy": true },
+            "editor": "proxy"
+        }
+    },
+    "required": ["keyword", "location"]
+}
