@@ -3,19 +3,14 @@
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "keyword": {
-            "title": "Keyword",
-            "type": "string",
-            "description": "The specific roofing niche (e.g., 'roofing contractor', 'roof repair').",
-            "editor": "textfield",
-            "prefill": "roofing contractor"
-        },
-        "location": {
-            "title": "Location (City, State or Zip Code)",
-            "type": "string",
-            "description": "The US location (e.g., 'Miami, FL', 'Dallas, TX').",
-            "editor": "textfield",
-            "prefill": "Miami, FL"
+        "startUrls": {
+            "title": "Start URLs",
+            "type": "array",
+            "description": "List of search URLs to scrape.",
+            "editor": "requestListSources",
+            "prefill": [
+                { "url": "https://www.yellowpages.com/search?search_terms=roofing+contractor&geo_location_terms=Miami%2C+FL" }
+            ]
         },
         "maxLeads": {
             "title": "Maximum Leads",
@@ -32,5 +27,5 @@
             "editor": "proxy"
         }
     },
-    "required": ["keyword", "location"]
+    "required": ["startUrls"]
 }

@@ -7,8 +7,7 @@ await Actor.init();
 try {
     const input = await Actor.getInput();
     const { 
-        keyword = 'roofing contractor', 
-        location = 'Miami, FL', 
+        startUrls = [],
         maxLeads = 100,
         proxyConfiguration 
     } = input || {};
@@ -19,7 +18,7 @@ try {
         apifyProxyCountry: 'US'
     });
 
-    log.info(`Searching YellowPages US for "${keyword}" in "${location}"`);
+    log.info(`Searching YellowPages US...`);
     await Actor.charge({ eventName: 'apify-actor-start', count: 1 });
 
     let extractedCount = 0;
@@ -77,7 +76,7 @@ try {
 
                 // Services
                 const categoriesElement = await item.$('.categories');
-                const services = categoriesElement ? (await categoriesElement.innerText()).trim() : keyword;
+                const services = categoriesElement ? (await categoriesElement.innerText()).trim() : '';
                 
                 // Website
                 const websiteElement = await item.$('a.track-visit-website, .links a[href^="http"]');
@@ -126,11 +125,14 @@ try {
         }
     });
 
-    const startUrl = `https://www.yellowpages.com/search?search_terms=${encodeURIComponent(keyword)}&geo_location_terms=${encodeURIComponent(location)}`;
-    
-    await crawler.addRequests([{
-        url: startUrl
-    }]);
+    if (startUrls && startUrls.length > 0) {
+        for (const req of startUrls) {
+            await crawler.addRequests([{ url: typeof req === 'string' ? req : req.url }]);
+        }
+    } else {
+        log.warning('No startUrls provided. Using default.');
+        await crawler.addRequests([{ url: 'https://www.yellowpages.com/search?search_terms=roofing+contractor&geo_location_terms=Miami%2C+FL' }]);
+    }
 
     armKillSwitch(crawler);
     await crawler.run();
